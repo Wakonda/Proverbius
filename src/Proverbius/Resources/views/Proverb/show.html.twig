@@ -1,0 +1,23 @@
+{% extends generic_layout %}
+
+{% block head_title %}Admin Proverbe{% endblock %}
+{% block main_title %}Administration - Proverbe{% endblock %}
+
+{% block main_content %}
+	<table class="admin_show">
+		<tr>
+			<th>Texte</th>
+			<td>{{ entity.text|raw }}</td>
+		</tr>
+		<tr>
+			<th>Pays</th>
+			<td>{{ entity.country|toString('title') }}</td>
+		</tr>
+		<tr>
+			<th>Slug</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('proverbadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> Modifier</a> - <a href="{{ path('proverbadmin_new') }}"><i class="fa fa-plus-square"></i> Créer</a>
+{% endblock %}
