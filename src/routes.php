@@ -243,6 +243,9 @@ $app->get('/admin/page/edit/{id}', 'controllers.pageadmin:editAction')
 $app->post('/admin/page/upate/{id}', 'controllers.pageadmin:updateAction')
     ->bind('pageadmin_update');
 
+$app->post('/admin/page/upload_image_mce', 'controllers.pageadmin:uploadImageMCEAction')
+	->bind('pageadmin_upload_image_mce');
+
 // ADMIN VERSION
 $app->get('/admin/version/index', 'controllers.versionadmin:indexAction')
     ->bind('versionadmin_index');
