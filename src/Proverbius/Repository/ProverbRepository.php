@@ -65,7 +65,7 @@ class ProverbRepository extends GenericRepository implements iRepository
 
 		if(!empty($datasObject->country))
 		{
-			$qb->andWhere("co.country_id = :country")
+			$qb->andWhere("co.id = :country")
 			   ->setParameter("country", $datasObject->country);
 		}
 
