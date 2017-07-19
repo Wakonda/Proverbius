@@ -12,9 +12,6 @@ class ProverbRepository extends GenericRepository implements iRepository
 {
 	public function save($entity, $id = null)
 	{
-		if(empty($entity->getSlug()))
-			$entity->setSlug($entity->getText());
-		
 		$entityData = array(
 			'text' => $entity->getText(),
 			'country_id' => ($entity->getCountry() == 0) ? null : $entity->getCountry(),
@@ -30,6 +27,11 @@ class ProverbRepository extends GenericRepository implements iRepository
 			$this->db->update('proverb', $entityData, array('id' => $id));
 
 		return $id;
+	}
+	
+	public function delete($id)
+	{
+		$this->db->delete('proverb', ['id' => $id]);
 	}
 	
     public function find($id, $show = false)
@@ -200,7 +202,6 @@ class ProverbRepository extends GenericRepository implements iRepository
 
         $entity->setId($data['id']);
         $entity->setText($data['text']);
-		$entity->setSlug($data['slug']);
 		
 		if($show)
 		{
@@ -256,8 +257,8 @@ class ProverbRepository extends GenericRepository implements iRepository
 
 		$qb->select("COUNT(*) AS count")
 		   ->from("proverb", "pf")
-		   ->where("pf.text = :text")
-		   ->setParameter('text', $entity->getText());
+		   ->where("pf.slug = :slug")
+		   ->setParameter('slug', $entity->getSlug());
 
 		if($entity->getId() != null)
 		{

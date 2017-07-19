@@ -54,6 +54,7 @@ class Proverb
     public function setText($text)
     {
         $this->text = $text;
+		$this->setSlug();
     }
 
     public function getCountry()
@@ -83,6 +84,7 @@ class Proverb
 
     public function setSlug()
     {
-		$this->slug = GenericFunction::slugify($this->text, 30);
+		if(empty($this->slug))
+			$this->slug = GenericFunction::slugify($this->text, 30);
     }
 }

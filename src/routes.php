@@ -215,6 +215,9 @@ $app->get('/admin/proverb/edit/{id}', 'controllers.proverbadmin:editAction')
 $app->post('/admin/proverb/upate/{id}', 'controllers.proverbadmin:updateAction')
     ->bind('proverbadmin_update');
 
+$app->get('/admin/proverb/delete/{id}', 'controllers.proverbadmin:deleteAction')
+    ->bind('proverbadmin_delete');
+
 $app->get('/admin/proverb/newFastMultiple', 'controllers.proverbadmin:newFastMultipleAction')
     ->bind('proverbadmin_newfastmultiple');
 

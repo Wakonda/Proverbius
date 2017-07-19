@@ -130,6 +130,14 @@ class ProverbAdminController
 	
 		return $app['twig']->render('Proverb/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
+	
+	public function deleteAction(Request $request, Application $app, $id)
+	{
+		$app['repository.proverb']->delete($id);
+		$app['session']->getFlashBag()->add('message', 'Le proverbe a été supprimé avec succès !');
+
+		return $app->redirect($app['url_generator']->generate('proverbadmin_index'));
+	}
 
 	public function newFastMultipleAction(Request $request, Application $app)
 	{
