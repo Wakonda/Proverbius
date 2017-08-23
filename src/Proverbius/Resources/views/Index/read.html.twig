@@ -95,7 +95,11 @@
 	<div class="displayNone success" id="send_result"></div>
 	<br>
 	<div>
-		<blockquote>{{ entity.text|raw }}</blockquote>
+		<blockquote>
+			<span class="visible-print">{{ ("photo/left-quotes-sign.png")|max_size_image(app.request_stack.currentrequest.basepath) }}</span>
+			{{ entity.text|raw }}
+			<span class="visible-print">{{ ("photo/right-quotes-symbol.png")|max_size_image(app.request_stack.currentrequest.basepath) }}</span>
+		</blockquote>
 	</div>
 	<hr>
 	<p>
