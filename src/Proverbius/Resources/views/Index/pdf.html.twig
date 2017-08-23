@@ -13,10 +13,9 @@
 		font-size: 17px;
 	}
 	
-	p, span
-	{
-		font-size: 15px;
-		text-align: justify;
+	blockquote {
+		font-size: 37.5px;
+		font-style: italic;
 	}
 	
 	#header_title
@@ -24,6 +23,11 @@
 		font-family: "Script MT Bold", "Time New Roman", serif !important;
 	}
 
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	
 	*
 	{
 		font-family: times;
@@ -50,6 +54,10 @@
     </page_footer>
 </page>
 
-<div>
+<blockquote>
 	{{ entity.text|raw }}
-</div>
+</blockquote>
+<hr>
+<p>
+<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="photo/country/{{ entity.country.flag }}" alt="" height="8" /> Proverbe - {{ entity.country.title }}</a>
+</p>
