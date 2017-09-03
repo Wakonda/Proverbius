@@ -7,9 +7,11 @@ $app->post('/search', 'controllers.index:indexSearchAction')
     ->bind('index_search');
 
 $app->get('/read/{id}/{slug}', 'controllers.index:readAction')
+	->value('slug', null)
 	->bind('read');
 
 $app->get('/read_pdf/{id}/{slug}', 'controllers.index:readPDFAction')
+	->value('slug', null)
 	->bind('read_pdf');
 
 $app->get('/result_search/{search}', 'controllers.index:indexSearchDatatablesAction')
@@ -25,6 +27,7 @@ $app->get('/stat', 'controllers.index:statAction')
 	->bind('stat');
 
 $app->get('/country/{id}/{slug}', 'controllers.index:countryAction')
+	->value('slug', null)
 	->bind('country');
 
 $app->get('/country_datatables/{countryId}', 'controllers.index:countryDatatablesAction')

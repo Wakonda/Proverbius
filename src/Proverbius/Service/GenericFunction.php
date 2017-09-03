@@ -29,7 +29,7 @@ class GenericFunction
 		$curl_scraped_page = curl_exec($cu);
 
 		curl_close($cu);
-
+// die(var_dump($curl_scraped_page));
 		return $curl_scraped_page;
 	}
 
