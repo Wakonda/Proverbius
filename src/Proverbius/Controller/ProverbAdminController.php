@@ -217,8 +217,7 @@ class ProverbAdminController
 			
 			$numberAdded = 0;
 			$numberDoubloons = 0;
-			
-			
+
 			foreach($proverbsArray as $proverb)
 			{
 				if($app['repository.proverb']->checkForDoubloon($proverb) > 0)
