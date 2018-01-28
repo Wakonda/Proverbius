@@ -162,9 +162,9 @@ class ProverbAdminController
 		{
 			$url = $req["url"];
 			$url_array = parse_url($url);
-			
-			$authorizedURLs = ['d3d3LmxpbnRlcm5hdXRlLmNvbQ==', 'Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy', 'ZGljb2NpdGF0aW9ucy5sZW1vbmRlLmZy'];
-			
+
+			$authorizedURLs = ['d3d3LmxpbnRlcm5hdXRlLmNvbQ==', 'Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy', 'ZGljb2NpdGF0aW9ucy5sZW1vbmRlLmZy', 'd3d3LnByb3ZlcmJlcy1mcmFuY2Fpcy5mcg=='];
+
 			if(!in_array(base64_encode($url_array['host']), $authorizedURLs))
 				$form->get("url")->addError(new FormError('URL inconnue'));
 		}
@@ -172,16 +172,19 @@ class ProverbAdminController
 		if($form->isValid())
 		{
 			if(!empty($ipProxy = $form->get('ipProxy')->getData()))
-				$html = str_get_html($app['generic_function']->file_get_contents_proxy($url, $ipProxy));
+				$html = $app['generic_function']->getContentURL($url, $ipProxy);
 			else
-				$html = file_get_html($url, false, null, 0);
+				$html = $app['generic_function']->getContentURL($url);
 
 			$proverbsArray = [];
-			
+
+			$dom = new \simple_html_dom();
+			$dom->load($html);
+
 			switch(base64_encode($url_array['host']))
 			{
 				case 'd3d3LmxpbnRlcm5hdXRlLmNvbQ==':
-					foreach($html->find('td.libelle_proverbe strong') as $pb)
+					foreach($dom->find('td.libelle_proverbe strong') as $pb)
 					{					
 						$entityProverb = clone $entity;
 						$text = str_replace("\r\n", "", trim($pb->plaintext));
@@ -192,7 +195,7 @@ class ProverbAdminController
 					}
 					break;
 				case 'Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy':
-					foreach($html->find('div#citation_citationSearchList q') as $pb)
+					foreach($dom->find('div#citation_citationSearchList q') as $pb)
 					{					
 						$entityProverb = clone $entity;
 						$text = str_replace("\r\n", "", trim($pb->plaintext));
@@ -203,18 +206,27 @@ class ProverbAdminController
 					}
 					break;
 				case 'ZGljb2NpdGF0aW9ucy5sZW1vbmRlLmZy':
-					foreach($html->find('div#content blockquote') as $pb)
+					foreach($dom->find('div#content blockquote') as $pb)
 					{
 						$entityProverb = clone $entity;
 						$text = str_replace("\r\n", "", trim(utf8_encode($pb->plaintext)));
-						
+
 						$entityProverb->setText($text);
-						
+
+						$proverbsArray[] = $entityProverb;
+					}
+					break;
+				case 'd3d3LnByb3ZlcmJlcy1mcmFuY2Fpcy5mcg==':
+					foreach($dom->find("div.post q") as $pb)
+					{
+						$entityProverb = clone $entity;
+						$entityProverb->setText($pb->plaintext);
+
 						$proverbsArray[] = $entityProverb;
 					}
 					break;
 			}
-			
+
 			$numberAdded = 0;
 			$numberDoubloons = 0;
 
