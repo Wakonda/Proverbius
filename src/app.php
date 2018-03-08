@@ -88,7 +88,6 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app['twig'] = $app->extend('twig', function (\Twig_Environment $twig) use ($app) {
 	$twig->addExtension(new Proverbius\Service\ProverbiusExtension($app));
- 
 	return $twig;
 });
 
@@ -98,6 +97,10 @@ $app['twig']->addGlobal("dev", 1);
 $app['repository.proverb'] = function ($app) {
     return new Proverbius\Repository\ProverbRepository($app['db']);
 };
+
+$app->before(function () use ($app) {
+    $app['twig']->addGlobal('generic_layout', $app['twig']->loadTemplate('generic_layout.html.twig'));
+}, \Silex\Application::EARLY_EVENT);
 
 // Register the error handler.
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
@@ -117,9 +120,6 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
 	return $app['twig']->render('Index/error.html.twig', array('code' => $code, 'message' => $e->getMessage()));
 });
 
-$app->before(function () use ($app) {
-    $app['twig']->addGlobal('generic_layout', $app['twig']->loadTemplate('generic_layout.html.twig'));
-});
 
 // Register repositories
 $app['repository.tag'] = function ($app) {
